@@ -7,7 +7,7 @@ var Cloud = {
   WIDTH: 420,
   OFFSET: 10,
   COLOR: '#ffffff',
-  SHADOW: 'rgba(0, 0, 0, 0.7'
+  SHADOW: 'rgba(0, 0, 0, 0.7)'
 };
 
 var TextData = {
