@@ -14,12 +14,10 @@ userDialog.classList.remove('hidden');
 var list = userDialog.querySelector('.setup-similar-list');
 var template = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-// Функция для генерации случайного числа на основе длинны переданного массива
 var randomIndex = function (arr) {
   return Math.floor(Math.random() * arr.length);
 };
 
-// Функция для генерации имени волшебника
 var generateWizardName = function (names, surnames) {
   var optionNameSurname = names[randomIndex(names)] + ' ' + surnames[randomIndex(surnames)];
   var optionSurnameName = surnames[randomIndex(surnames)] + ' ' + names[randomIndex(names)];
@@ -27,7 +25,6 @@ var generateWizardName = function (names, surnames) {
   return Math.round(Math.random()) ? optionNameSurname : optionSurnameName;
 };
 
-// Функция для генерации данных о волшебнике
 var generateWizardData = function () {
   var wizard = {};
 
@@ -38,7 +35,6 @@ var generateWizardData = function () {
   return wizard;
 };
 
-// Функция для генерации массива с данными о волшебниках
 var generateWizardsDataArray = function (number) {
   var arr = [];
 
@@ -49,7 +45,6 @@ var generateWizardsDataArray = function (number) {
   return arr;
 };
 
-// Функция для отрисовки волшебника
 var renderWizard = function (wizard) {
   var wizardElement = template.cloneNode(true);
 
@@ -60,7 +55,6 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-// Функция для отрисовки списка волшебников
 var renderAllWizards = function (wizardsDataArray) {
   var fragment = document.createDocumentFragment();
 
@@ -71,10 +65,8 @@ var renderAllWizards = function (wizardsDataArray) {
   list.appendChild(fragment);
 };
 
-// Создаем массив с данными о волшебниках
 var wizardsData = generateWizardsDataArray(RandomData.NUMBER);
 
-// Запуск отрисовки списка похожих персонажей
 renderAllWizards(wizardsData);
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
