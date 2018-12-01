@@ -32,13 +32,32 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-var onPopupEscPress = function (evt) {
-  var activeElement = document.activeElement;
+// Первый вариант закрытия окна userDialog в котором стоит фокус на usernameInput
+// 1. Есть функция обработчик onPopupEscPress
+// 2. В коде есть слушатель на usernameInput в котором прописана остановка распространения
 
-  if (evt.keyCode === ESC_CODE && usernameInput !== activeElement) {
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_CODE) {
     closePopup();
   }
 };
+
+usernameInput.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_CODE) {
+    evt.stopPropagation();
+  }
+});
+
+// Второй вариант решения задачи закрытия окна userDialog в котором стоит фокус на usernameInput.
+// 1. Здесь только функция обработчик onPopupEscPress, а которой стоит проверка на "активный элемент". При такой реализации не нужно навешивать отдельный слушатель на usernameInput
+
+/* var onPopupEscPress = function (evt) {
+    var activeElement = document.activeElement;
+
+    if (evt.keyCode === ESC_CODE && usernameInput !== activeElement) {
+      closePopup();
+    }
+}; */
 
 setupOpen.addEventListener('click', openPopup);
 
