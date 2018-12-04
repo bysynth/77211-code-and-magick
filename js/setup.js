@@ -15,65 +15,58 @@ var ENTER_CODE = 13;
 var setupOpen = document.querySelector('.setup-open');
 var userDialog = document.querySelector('.setup');
 var setupClose = userDialog.querySelector('.setup-close');
-var usernameInput = userDialog.querySelector('.setup-user-name');
 
 var list = userDialog.querySelector('.setup-similar-list');
 var template = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-// Вопрос - как быть с наименованием обработчиков, ведь одни и те же обработкичи я навешиваю как на клик, так и на нажатие кнопки. Например, openPopup стоит назвать setupOpenClickKeydownHandler? или onSetupOpenClickKeydown? Или оставить как есть?
+// Дополнительные функции для обработчиков
 
 var openPopup = function () {
   userDialog.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onSetupOpenEscKeydown);
 };
 
 var closePopup = function () {
   userDialog.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onSetupOpenEscKeydown);
 };
 
-// Первый вариант закрытия окна userDialog в котором стоит фокус на usernameInput
-// 1. Есть функция обработчик onPopupEscPress
-// 2. В коде есть слушатель на usernameInput в котором прописана остановка распространения
+// Обработчики
 
-var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_CODE) {
-    closePopup();
-  }
+var onSetupOpenClick = function () {
+  openPopup();
 };
 
-usernameInput.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ESC_CODE) {
-    evt.stopPropagation();
-  }
-});
-
-// Второй вариант решения задачи закрытия окна userDialog в котором стоит фокус на usernameInput.
-// 1. Здесь только функция обработчик onPopupEscPress, а которой стоит проверка на "активный элемент". При такой реализации не нужно навешивать отдельный слушатель на usernameInput
-
-/* var onPopupEscPress = function (evt) {
-    var activeElement = document.activeElement;
-
-    if (evt.keyCode === ESC_CODE && usernameInput !== activeElement) {
-      closePopup();
-    }
-}; */
-
-setupOpen.addEventListener('click', openPopup);
-
-setupOpen.addEventListener('keydown', function (evt) {
+var onSetupOpenEnterKeydown = function (evt) {
   if (evt.keyCode === ENTER_CODE) {
     openPopup();
   }
-});
+};
 
-setupClose.addEventListener('click', closePopup);
+var onSetupOpenEscKeydown = function (evt) {
+  var target = evt.target;
+  if (evt.keyCode === ESC_CODE && !target.classList.contains('setup-user-name')) {
+    closePopup();
+  }
+};
 
-setupClose.addEventListener('keydown', function (evt) {
+var onSetupCloseClick = function () {
+  closePopup();
+};
+
+var onSetupCloseEnterKeydown = function (evt) {
   if (evt.keyCode === ENTER_CODE) {
     closePopup();
   }
-});
+};
+
+// Слушатели событий
+
+setupOpen.addEventListener('click', onSetupOpenClick);
+setupOpen.addEventListener('keydown', onSetupOpenEnterKeydown);
+
+setupClose.addEventListener('click', onSetupCloseClick);
+setupClose.addEventListener('keydown', onSetupCloseEnterKeydown);
 
 // Изменение цвета плаща, глаз и файрбола персонажа
 
