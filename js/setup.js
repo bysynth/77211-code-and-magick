@@ -21,12 +21,17 @@ var template = document.querySelector('#similar-wizard-template').content.queryS
 
 // Дополнительные функции для обработчиков
 
+var setUserDialogInitialPosition = function () {
+  userDialog.removeAttribute('style');
+};
+
 var openPopup = function () {
   userDialog.classList.remove('hidden');
   document.addEventListener('keydown', onSetupOpenEscKeydown);
 };
 
 var closePopup = function () {
+  setUserDialogInitialPosition();
   userDialog.classList.add('hidden');
   document.removeEventListener('keydown', onSetupOpenEscKeydown);
 };
