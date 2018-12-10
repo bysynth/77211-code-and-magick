@@ -2,55 +2,58 @@
 
 (function () {
 
-  var userDialog = document.querySelector('.setup'); // временно
-  var dialogHandler = userDialog.querySelector('.upload');
+  var userDialog = document.querySelector('.setup');
+  var setupOpen = document.querySelector('.setup-open');
+  var setupClose = userDialog.querySelector('.setup-close');
 
-  dialogHandler.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
+  var setUserDialogInitialPosition = function () {
+    userDialog.removeAttribute('style');
+  };
 
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+  var openPopup = function () {
+    userDialog.classList.remove('hidden');
+    document.addEventListener('keydown', onSetupOpenEscKeydown);
+  };
 
-    var dragged = false;
+  var closePopup = function () {
+    setUserDialogInitialPosition();
+    userDialog.classList.add('hidden');
+    document.removeEventListener('keydown', onSetupOpenEscKeydown);
+  };
 
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      dragged = true;
+  var onSetupOpenClick = function () {
+    openPopup();
+  };
 
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
+  var onSetupOpenEnterKeydown = function (evt) {
+    if (window.utils.isEnterEvent(evt)) {
+      openPopup();
+    }
+  };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
+  var onSetupOpenEscKeydown = function (evt) {
+    var target = evt.target;
+    if (window.utils.isEscEvent(evt) && !target.classList.contains('setup-user-name')) {
+      closePopup();
+    }
+  };
 
-      userDialog.style.top = (userDialog.offsetTop - shift.y) + 'px';
-      userDialog.style.left = (userDialog.offsetLeft - shift.x) + 'px';
-    };
+  var onSetupCloseClick = function () {
+    closePopup();
+  };
 
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
+  var onSetupCloseEnterKeydown = function (evt) {
+    if (window.utils.isEnterEvent(evt)) {
+      closePopup();
+    }
+  };
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+  setupOpen.addEventListener('click', onSetupOpenClick);
+  setupOpen.addEventListener('keydown', onSetupOpenEnterKeydown);
 
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          dialogHandler.removeEventListener('click', onClickPreventDefault);
-        };
-        dialogHandler.addEventListener('click', onClickPreventDefault);
-      }
-    };
+  setupClose.addEventListener('click', onSetupCloseClick);
+  setupClose.addEventListener('keydown', onSetupCloseEnterKeydown);
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
+  window.dialog = userDialog;
 
 })();
-
