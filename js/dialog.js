@@ -5,6 +5,7 @@
   var userDialog = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = userDialog.querySelector('.setup-close');
+  var form = userDialog.querySelector('.setup-wizard-form');
 
   var setUserDialogInitialPosition = function () {
     userDialog.removeAttribute('style');
@@ -13,12 +14,14 @@
   var openPopup = function () {
     userDialog.classList.remove('hidden');
     document.addEventListener('keydown', onSetupOpenEscKeydown);
+    form.addEventListener('submit', onFormSubmit);
   };
 
   var closePopup = function () {
     setUserDialogInitialPosition();
     userDialog.classList.add('hidden');
     document.removeEventListener('keydown', onSetupOpenEscKeydown);
+    form.removeEventListener('submit', onFormSubmit);
   };
 
   var onSetupOpenClick = function () {
@@ -46,6 +49,11 @@
     if (window.utils.isEnterEvent(evt)) {
       closePopup();
     }
+  };
+
+  var onFormSubmit = function (evt) {
+    window.backend.save(new FormData(form), closePopup, window.error);
+    evt.preventDefault();
   };
 
   setupOpen.addEventListener('click', onSetupOpenClick);
