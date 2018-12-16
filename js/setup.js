@@ -14,12 +14,14 @@
     var coatColor = window.utils.chooseColor(window.data.COAT_COLORS);
     wizardCoat.style.fill = coatColor;
     wizardCoatInput.value = coatColor;
+    window.wizards.onWizardCoatClick(coatColor);
   });
 
   wizardEyes.addEventListener('click', function () {
     var eyesColor = window.utils.chooseColor(window.data.EYES_COLORS);
     wizardEyes.style.fill = eyesColor;
     wizardEyesInput.value = eyesColor;
+    window.wizards.onWizardEyesClick(eyesColor);
   });
 
   fireball.addEventListener('click', function () {
